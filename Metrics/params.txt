@@ -1,0 +1,1 @@
+Trial 0 finished with value: 0.9839 and parameters: {'learning_rate': 0.0010084101984587203, 'batch_size': 16, 'dropout_rate': 0.5018474396618718, 'patience': 5}. 
