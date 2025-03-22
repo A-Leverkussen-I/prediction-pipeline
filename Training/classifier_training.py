@@ -36,7 +36,7 @@ def parse_args():
                         help="Dropout rate for the classifier head")
     parser.add_argument('--patience', type=int, default=5,
                         help="Patience for early stopping (number of epochs with no improvement)")
-    parser.add_argument('--output_dir', type=str, default='FINAL HYPERPARAMETER TRAINING',
+    parser.add_argument('--output_dir', type=str, default='output',
                         help="Directory for saving checkpoints, logs, and evaluation results")
     args = parser.parse_args()
     return args
