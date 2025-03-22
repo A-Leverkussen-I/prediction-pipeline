@@ -18,6 +18,7 @@ def parse_args():
     """
     Parse command-line arguments.
     """
+
     parser = argparse.ArgumentParser(
         description="Soccer Player Pose Classification Training Script"
     )
@@ -27,15 +28,15 @@ def parse_args():
                         help="Batch size for training")
     parser.add_argument('--epochs', type=int, default=30,
                         help="Number of training epochs")
-    parser.add_argument('--learning_rate', type=float, default=1e-3,
+    parser.add_argument('--learning_rate', type=float, default=0.0010084101984587203,
                         help="Initial learning rate")
     parser.add_argument('--num_workers', type=int, default=2,
                         help="Number of workers for data loading")
-    parser.add_argument('--dropout_rate', type=float, default=0.5,
+    parser.add_argument('--dropout_rate', type=float, default=0.5018474396618718,
                         help="Dropout rate for the classifier head")
     parser.add_argument('--patience', type=int, default=5,
                         help="Patience for early stopping (number of epochs with no improvement)")
-    parser.add_argument('--output_dir', type=str, default='outputs_batch16',
+    parser.add_argument('--output_dir', type=str, default='FINAL HYPERPARAMETER TRAINING',
                         help="Directory for saving checkpoints, logs, and evaluation results")
     args = parser.parse_args()
     return args
