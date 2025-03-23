@@ -1,3 +1,4 @@
+import argparse
 import torch
 import torch.nn as nn
 from torchvision import models, transforms
@@ -50,6 +51,11 @@ def load_image(image_path):
     return image
 
 def main():
+    parser = argparse.ArgumentParser(description="Predict the class of an image using a trained ResNet50 model.")
+    parser.add_argument("--model", required=True, help="Path to the trained model (.pth file).")
+    parser.add_argument("--image", required=True, help="Path to the image file for prediction.")
+    args = parser.parse_args()
+
     # Define the number of classes (must match your training setup)
     num_classes = 17
     
@@ -61,40 +67,32 @@ def main():
         "Head Shot","Hero","HoldingBall", "HoldingBall-45deg-l", "HoldingBall-45deg-r"
     ]
     
-    # Prompt user for the model file path
-    model_path = input("Enter the path to your model (.pth file): ").strip()
-    
     # Set device (GPU if available, otherwise CPU)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     # Build the model and load the saved weights
     model = build_model(num_classes, dropout_rate=0.5)
-    model.load_state_dict(torch.load(model_path, map_location=device))
+    model.load_state_dict(torch.load(args.model, map_location=device))
     model = model.to(device)
     model.eval()
     print("Model loaded successfully.\n")
     
-    # Interactive loop for image prediction
-    while True:
-        image_path = input("Enter the path to an image (or type 'q' to quit): ").strip()
-        if image_path.lower() == 'q':
-            break
-        
-        try:
-            image = load_image(image_path)
-        except Exception as e:
-            print(e)
-            continue
-        
-        image = image.to(device)
-        with torch.no_grad():
-            output = model(image)
-            _, predicted = torch.max(output, 1)
-            predicted_index = predicted.item()
-        
-        predicted_label = class_names[predicted_index]
-        print(f"Predicted class index: {predicted_index}")
-        print(f"Predicted class label: {predicted_label}\n")
+    # Load and preprocess the image
+    try:
+        image = load_image(args.image)
+    except Exception as e:
+        print(e)
+        return
+    
+    image = image.to(device)
+    with torch.no_grad():
+        output = model(image)
+        _, predicted = torch.max(output, 1)
+        predicted_index = predicted.item()
+    
+    predicted_label = class_names[predicted_index]
+    print(f"Predicted class index: {predicted_index}")
+    print(f"Predicted class label: {predicted_label}\n")
 
 if __name__ == "__main__":
     main()
